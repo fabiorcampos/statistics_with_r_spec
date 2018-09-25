@@ -14,12 +14,14 @@ output:
 ```{r load-packages, message = FALSE}
 library(ggplot2)
 library(dplyr)
+library(knitr)
 ```
 
 ### Load data
 
 ```{r load-data}
 load("brfss2013.RData")
+df = brfss2013
 ```
 
 * * *
@@ -38,34 +40,91 @@ The data are transmitted to the CDC for editing, processing, weighting, and anal
 
 ## Part 2: Research questions
 
-**Research quesion 1:** male or female consumes more fruits and vegetables? 
+**Research quesion 1:** What is the behavior of fruits and vegetables by status of health? 
 
-**Research quesion 2:** the people who consumes more fruits has chronic problem? 
+In this question we will try to understand the daily behavior of natural juices, vegetables and beans according the declared health status of intervierws. Our hipotheses is that the people with a daily consumption of fruits, juices and vegetables has excellent and good health status. 
 
-**Research quesion 3:**about the weight?
+**Research quesion 2:** male or female consumes more fruits and vegetables? 
+
+**Research quesion 3:**  the people who consumes more fruits has chronic problem?
 
 
 * * *
 
 ## Part 3: Exploratory data analysis
 
-NOTE: Insert code chunks as needed by clicking on the "Insert a new code chunk" 
-button (green button with orange arrow) above. Make sure that your code is visible
-in the project you submit. Delete this note when before you submit your work.
-
 **Research quesion 1:**
 
-```{r}
-
+### Separate variables
+```{r echo=FALSE, results=FALSE}
+df %>%
+  select(genhlth, fruitju1, fvgreen, vegetab1)
 ```
+
+### Descriptive analysis of variables
+
+Below we will to analysis 4 variables: genhlth, fruitjui1, fvgreen, vegetab1. 
+For each variable we check the factors and the proportion for each one. After that, we will select some factors related to periodic to analyse and to the end we make analysis comparing the health status with the food that we analyzed. 
+
+### Health Status description - genhlth variable
+```{r}
+Percentage = prop.table(table(df$genhlth))
+Frequencies = summary(df$genhlth)
+Frequencies = Frequencies[1:5]
+genhlth_df = data.frame(Frequencies, Percentage)
+genhlth_df = genhlth_df[,-2]
+```
+
+```{r}
+kable(genhlth_df, caption = "Health Status Table")
+```
+
+Note that the most part of interviewrs (80%) declaring Excellent and Good Health Status.
+
+### Frequencies of Healthy foods consumption
+
+To this analysis we focusing our sample to individuals that consumes this kind of food per day or not consuming. The survey calculated too the consume with week and month period but we are interesting in the daily consumption. 
+
+```{r echo=FALSE, results= FALSE}
+### Juice
+prop.fruits = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201)
+
+prop.fruits = as.data.frame(table(prop.fruits$fruitju1))
+`row.names<-`(prop.fruits, prop.fruits$Var1)
+
+### Veg
+prop.veg = df %>% 
+      filter(vegetab1 <= 299 & vegetab1 >=201)
+
+prop.veg = as.data.frame(table(prop.veg$vegetab1))
+`row.names<-`(prop.veg, prop.veg$Var1)
+
+### Beens
+prop.beens = df %>% 
+      filter(fvgreen <= 299 & fvgreen >=201)
+
+prop.beens = as.data.frame(table(prop.beens$fvgreen))
+`row.names<-`(prop.beens, prop.beens$Var1)
+
+### Proportion of 1 to 3 times per day of consumption
+sumfruit = sum(prop.fruits[c(1:3),2])/sum(prop.fruits[,2])
+sumveg = sum(prop.veg[c(1:3),2])/sum(prop.veg[,2])
+sumbeens = sum(prop.beens [c(1:3),2])/sum(prop.beens [,2])
+```
+
+```{r echo=FALSE, fig.show='hold',fig.align='center', fig.width=15, fig.height=5}
+par(mfrow = c(1, 3))
+barplot(prop.fruits$Freq, names.arg=prop.fruits$Var1, cex.names=0.8, ylim = c(0,90000), col = "red", main = "Frequencies of Fruits Consumption per day")
+barplot(prop.veg$Freq, names.arg=prop.veg$Var1, cex.names=0.8, ylim = c(0,130000), col = "Orange", main = "Frequencies of Vegetables Consumption per day")
+barplot(prop.beens$Freq, names.arg=prop.beens$Var1, cex.names=0.8, ylim = c(0,70000), col = "blue", main = "Frequencies of Beans Consumption per day")
+```
+
+Note that the most frequencies of consumption per day ocurr at 101 and 105 at most. Make analysis more precisely we identified that the most ocurrencies is between 1 and 3 times per day. For the Fruits the frequencies of 1 to 3 times per day is 97%, vegetables and beans 98%. In this case, we considering to our sample just the interviewrs that respond that the consumption of fruits, beens and vegetables is between 1 to 3. 
 
 
 
 **Research quesion 2:**
-
-```{r}
-
-```
 
 
 

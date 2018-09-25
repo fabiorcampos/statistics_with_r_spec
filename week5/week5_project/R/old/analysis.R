@@ -8,7 +8,6 @@ load("~/MEGA/CURSOS_ONLINE/statistics_with_r_spec/week5/week5_project/brfss2013.
 df = brfss2013
 
 ### Select variables
-
 df %>%
   select(genhlth, fruitju1, fruit1, fvgreen, vegetab1) %>%
   str()
@@ -137,7 +136,6 @@ three_v = as.data.frame(vc)
 
 veg = data.frame("One" = one_v, "Two" = two_v, "Three" = three_v, row.names = c("Excellent", "Very Good",
                                                                                   "Good", "Fair", "Poor"))
-
 veg = as.data.frame(t(veg))
 veg = data.frame(veg, row.names = c("One vegetables", "Two vegetables", "Three vegetables"))
 
