@@ -40,11 +40,13 @@ The data are transmitted to the CDC for editing, processing, weighting, and anal
 
 ## Part 2: Research questions
 
-**Research quesion 1:** What is the behavior of fruits and vegetables by status of health? 
+**Research quesion 1:** What is the consumption behavior of fruits, vegetables and beans by status of health? 
 
-In this question we will try to understand the daily behavior of natural juices, vegetables and beans according the declared health status of intervierws. Our hipotheses is that the people with a daily consumption of fruits, juices and vegetables has excellent and good health status. 
+In this question we will try to understand the daily behavior of natural juices, vegetables and beans according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
 
 **Research quesion 2:** male or female consumes more fruits and vegetables? 
+
+In this question the main objective is to identify if the differents genres has differents consumptions of fruits, vegetables and beens. 
 
 **Research quesion 3:**  the people who consumes more fruits has chronic problem?
 
@@ -83,44 +85,70 @@ Note that the most part of interviewrs (80%) declaring Excellent and Good Health
 
 ### Frequencies of Healthy foods consumption
 
-To this analysis we focusing our sample to individuals that consumes this kind of food per day or not consuming. The survey calculated too the consume with week and month period but we are interesting in the daily consumption. 
+#### Juice Fruits
 
-```{r echo=FALSE, results= FALSE}
-### Juice
-prop.fruits = df %>% 
-      filter(fruitju1 <= 299 & fruitju1 >=201)
+We selected the factors between 201 and 299 in the fruiju1 variable. This factors correspond how many juice fruits the interviewer consume during the week. 
 
-prop.fruits = as.data.frame(table(prop.fruits$fruitju1))
-`row.names<-`(prop.fruits, prop.fruits$Var1)
+```{r}
+### Juice Excellent
+prop.fruits.ex = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Excellent")
 
-### Veg
-prop.veg = df %>% 
-      filter(vegetab1 <= 299 & vegetab1 >=201)
+### Juice Very Good
+prop.fruits.vergood = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Very good")
 
-prop.veg = as.data.frame(table(prop.veg$vegetab1))
-`row.names<-`(prop.veg, prop.veg$Var1)
+### Juice Good
+prop.fruits.good = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Good")
 
-### Beens
-prop.beens = df %>% 
-      filter(fvgreen <= 299 & fvgreen >=201)
+### Juice Fair
+prop.fruits.fair = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Fair")
 
-prop.beens = as.data.frame(table(prop.beens$fvgreen))
-`row.names<-`(prop.beens, prop.beens$Var1)
-
-### Proportion of 1 to 3 times per day of consumption
-sumfruit = sum(prop.fruits[c(1:3),2])/sum(prop.fruits[,2])
-sumveg = sum(prop.veg[c(1:3),2])/sum(prop.veg[,2])
-sumbeens = sum(prop.beens [c(1:3),2])/sum(prop.beens [,2])
+### Juice Poor
+prop.fruits.poor = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Poor")
 ```
+
 
 ```{r echo=FALSE, fig.show='hold',fig.align='center', fig.width=15, fig.height=5}
-par(mfrow = c(1, 3))
-barplot(prop.fruits$Freq, names.arg=prop.fruits$Var1, cex.names=0.8, ylim = c(0,90000), col = "red", main = "Frequencies of Fruits Consumption per day")
-barplot(prop.veg$Freq, names.arg=prop.veg$Var1, cex.names=0.8, ylim = c(0,130000), col = "Orange", main = "Frequencies of Vegetables Consumption per day")
-barplot(prop.beens$Freq, names.arg=prop.beens$Var1, cex.names=0.8, ylim = c(0,70000), col = "blue", main = "Frequencies of Beans Consumption per day")
+par(mfrow = c(2, 3))
+barplot(table(prop.fruits.ex$fruitju1), cex.names=0.8, ylim = c(0,7000), col = "red", main = "Frequencies of Juice Fruits Consumption per day by Excellent Health Status")
+barplot(table(prop.fruits.vergood$fruitju1), cex.names=0.8, ylim = c(0,10000), col = "blue", main = "Frequencies of Juice Fruits Consumption per day by Very Good Health Status")
+barplot(table(prop.fruits.good$fruitju1), cex.names=0.8, ylim = c(0,7000), col = "dark blue", main = "Frequencies of Juice Fruits Consumption per day by Good Health Status")
+barplot(table(prop.fruits.fair$fruitju1), cex.names=0.8, ylim = c(0,3000), col = "grey", main = "Frequencies of Juice Fruits Consumption per day by Fair Health Status")
+barplot(table(prop.fruits.poor$fruitju1), cex.names=0.8, ylim = c(0,1300), col = "green", main = "Frequencies of Juice Fruits Consumption per day by Poor Health Status")
 ```
 
-Note that the most frequencies of consumption per day ocurr at 101 and 105 at most. Make analysis more precisely we identified that the most ocurrencies is between 1 and 3 times per day. For the Fruits the frequencies of 1 to 3 times per day is 97%, vegetables and beans 98%. In this case, we considering to our sample just the interviewrs that respond that the consumption of fruits, beens and vegetables is between 1 to 3. 
+We identified that the differents groups of health status has the same curve distribution. Below we checked the mean and median of sample. 
+
+```{r}
+juice.ex = prop.fruits.ex$fruitju1
+juice.ver = prop.fruits.vergood$fruitju1
+juice.goo = prop.fruits.good$fruitju1
+juice.fai = prop.fruits.fair$fruitju1
+juice.poo = prop.fruits.poor$fruitju1
+
+summaryfun = function(var) {
+       a = (var) - 200
+       summary(a)
+}
+
+jex = summaryfun(juice.ex)
+jve = summaryfun(juice.ver)
+jgo = summaryfun(juice.goo)
+jfa = summaryfun(juice.fai)
+jpo = summaryfun(juice.poo)
+
+names = c("Excellent", "Very Good", "Good", "Fair", "Poor")
+boxplot(jex, jve, jgo, jfa, jpo, outline = FALSE, names = names, main = "Comparing Boxplot Consumption of Juice Fruit by Health Status in the week", ylab = "Average")
+```
 
 
 
