@@ -40,22 +40,23 @@ The data are transmitted to the CDC for editing, processing, weighting, and anal
 
 ## Part 2: Research questions
 
-**Research quesion 1:** What is the consumption behavior of fruits, vegetables and beans by status of health? 
+**Research quesion 1:** What is the consumption behavior of fruits status of health? 
 
-In this question we will try to understand the daily behavior of natural juices, vegetables and beans according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
+In this question we will try to understand the daily behavior of fruits according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
 
-**Research quesion 2:** male or female consumes more fruits and vegetables? 
+**Research quesion 2:** What is the consumption behavior of juices status of health? 
 
-In this question the main objective is to identify if the differents genres has differents consumptions of fruits, vegetables and beens. 
+In this question we will try to understand the daily behavior of natural juices, v according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
 
-**Research quesion 3:**  the people who consumes more fruits has chronic problem?
+**Research quesion 3:**  What is the consumption behavior of vegetables status of health? 
 
+In this question we will try to understand the daily behavior of vegetables according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
 
 * * *
 
 ## Part 3: Exploratory data analysis
 
-**Research quesion 1:**
+**Research quesion 1/2/3:**
 
 ### Separate variables
 ```{r echo=FALSE, results=FALSE}
@@ -150,15 +151,4 @@ names = c("Excellent", "Very Good", "Good", "Fair", "Poor")
 boxplot(jex, jve, jgo, jfa, jpo, outline = FALSE, names = names, main = "Comparing Boxplot Consumption of Juice Fruit by Health Status in the week", ylab = "Average")
 ```
 
-
-
-**Research quesion 2:**
-
-
-
-**Research quesion 3:**
-
-```{r}
-
-```
-
+Using BoxPlot we noted that the average consumption of health foods is the same for the entire classes. We believe that the consumption of differents classes does not have some correlation or causality. 

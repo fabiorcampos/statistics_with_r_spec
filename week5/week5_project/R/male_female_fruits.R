@@ -127,3 +127,5 @@ df.fruitetable.sex = mutate(df.fruitetable.sex, fairProportionMale = Fair.Male/s
 df.fruitetable.sex = mutate(df.fruitetable.sex, fairProportionFemale = Fair.Female/sum(Fair.Female))
 df.fruitetable.sex = mutate(df.fruitetable.sex, PoorProportionMale = Poor.Male/sum(Poor.Male))
 df.fruitetable.sex = mutate(df.fruitetable.sex, PoorProportionFemale = Poor.Female/sum(Poor.Female))
+
+
