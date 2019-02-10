@@ -1,5 +1,14 @@
-## Statistics with R (Specialization)
-Codes of Specialization "Statistics with R"
+## Introduction
+
+This repository consist of artifacts related to the [Statistics with R (Specialization)](https://www.coursera.org/specializations/statistics) offered by Coursera in collaboration with the Duke University.
+
+## What you can find here?
+
+1. Rdata and Rscripts - separate by Courses and week´s exercises
+
+2. Weeks - Reports
+
+## Deliverables
 
 #### Course 1 - Introduction to Probability and Data
 
