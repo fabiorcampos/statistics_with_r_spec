@@ -7,5 +7,5 @@ Codes of Specialization "Statistics with R"
 
 ###### [Week 3 Rpub](https://rpubs.com/fabiorocha5150/week3lab)
 
-###### [Week 5 Rpub]
+###### [Week 5 Rpub](https://rpubs.com/fabiorocha5150/ExploringtheBRFSSdata)
 
