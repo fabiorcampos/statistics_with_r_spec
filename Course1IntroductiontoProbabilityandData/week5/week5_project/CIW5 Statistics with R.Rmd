@@ -1,0 +1,154 @@
+---
+title: "Exploring the BRFSS data"
+output: 
+  html_document: 
+    fig_height: 4
+    highlight: pygments
+    theme: spacelab
+---
+
+## Setup
+
+### Load packages
+
+```{r load-packages, message = FALSE}
+library(ggplot2)
+library(dplyr)
+library(knitr)
+```
+
+### Load data
+
+```{r load-data}
+load("brfss2013.RData")
+df = brfss2013
+```
+
+* * *
+
+## Part 1: Data
+
+The Behavioral Risk Factor Surveillance System (BRFSS) is "a collaborative project between all of the states in the United States (US) and participating US territories and the Centers for Disease Control and Prevention (CDC)."
+
+According to the Overview text "The BRFSS objective is to collect uniform, state-specific data on preventive health practices and risk behaviors that are linked to chronic diseases, injuries, and preventable infectious diseases that affect the adult population."
+
+The data is collected using telephone and cellular telephone-based surveys. In conducting the BRFSS landline telephone survey, interviewers collect data from a randomly selected adult in a household. In conducting the cellular telephone version of the BRFSS questionnaire, interviewers collect data from an adult who participates by using a cellular telephone and resides in a private residence or college housing.
+
+The data are transmitted to the CDC for editing, processing, weighting, and analysis. An edited and weighted data file is provided to each participating health department for each year of data collection, and summary reports of state-specific data are prepared by the CDC. 
+
+* * *
+
+## Part 2: Research questions
+
+**Research quesion 1:** What is the consumption behavior of fruits status of health? 
+
+In this question we will try to understand the daily behavior of fruits according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
+
+**Research quesion 2:** What is the consumption behavior of juices status of health? 
+
+In this question we will try to understand the daily behavior of natural juices, v according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
+
+**Research quesion 3:**  What is the consumption behavior of vegetables status of health? 
+
+In this question we will try to understand the daily behavior of vegetables according to declared health status of intervierws. Our hipotheses is that the people with more week consumption of fruits, juices and vegetables has excellent and good health status. 
+
+* * *
+
+## Part 3: Exploratory data analysis
+
+**Research quesion 1/2/3:**
+
+### Separate variables
+```{r echo=FALSE, results=FALSE}
+df %>%
+  select(genhlth, fruitju1, fvgreen, vegetab1)
+```
+
+### Descriptive analysis of variables
+
+Below we will to analysis 4 variables: genhlth, fruitjui1, fvgreen, vegetab1. 
+For each variable we check the factors and the proportion for each one. After that, we will select some factors related to periodic to analyse and to the end we make analysis comparing the health status with the food that we analyzed. 
+
+### Health Status description - genhlth variable
+```{r}
+Percentage = prop.table(table(df$genhlth))
+Frequencies = summary(df$genhlth)
+Frequencies = Frequencies[1:5]
+genhlth_df = data.frame(Frequencies, Percentage)
+genhlth_df = genhlth_df[,-2]
+```
+
+```{r}
+kable(genhlth_df, caption = "Health Status Table")
+```
+
+Note that the most part of interviewrs (80%) declaring Excellent and Good Health Status.
+
+### Frequencies of Healthy foods consumption
+
+#### Juice Fruits
+
+We selected the factors between 201 and 299 in the fruiju1 variable. This factors correspond how many juice fruits the interviewer consume during the week. 
+
+```{r}
+### Juice Excellent
+prop.fruits.ex = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Excellent")
+
+### Juice Very Good
+prop.fruits.vergood = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Very good")
+
+### Juice Good
+prop.fruits.good = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Good")
+
+### Juice Fair
+prop.fruits.fair = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Fair")
+
+### Juice Poor
+prop.fruits.poor = df %>% 
+      filter(fruitju1 <= 299 & fruitju1 >=201) %>%
+      filter(genhlth == "Poor")
+```
+
+
+```{r echo=FALSE, fig.show='hold',fig.align='center', fig.width=15, fig.height=5}
+par(mfrow = c(2, 3))
+barplot(table(prop.fruits.ex$fruitju1), cex.names=0.8, ylim = c(0,7000), col = "red", main = "Frequencies of Juice Fruits Consumption per day by Excellent Health Status")
+barplot(table(prop.fruits.vergood$fruitju1), cex.names=0.8, ylim = c(0,10000), col = "blue", main = "Frequencies of Juice Fruits Consumption per day by Very Good Health Status")
+barplot(table(prop.fruits.good$fruitju1), cex.names=0.8, ylim = c(0,7000), col = "dark blue", main = "Frequencies of Juice Fruits Consumption per day by Good Health Status")
+barplot(table(prop.fruits.fair$fruitju1), cex.names=0.8, ylim = c(0,3000), col = "grey", main = "Frequencies of Juice Fruits Consumption per day by Fair Health Status")
+barplot(table(prop.fruits.poor$fruitju1), cex.names=0.8, ylim = c(0,1300), col = "green", main = "Frequencies of Juice Fruits Consumption per day by Poor Health Status")
+```
+
+We identified that the differents groups of health status has the same curve distribution. Below we checked the mean and median of sample. 
+
+```{r}
+juice.ex = prop.fruits.ex$fruitju1
+juice.ver = prop.fruits.vergood$fruitju1
+juice.goo = prop.fruits.good$fruitju1
+juice.fai = prop.fruits.fair$fruitju1
+juice.poo = prop.fruits.poor$fruitju1
+
+summaryfun = function(var) {
+       a = (var) - 200
+       summary(a)
+}
+
+jex = summaryfun(juice.ex)
+jve = summaryfun(juice.ver)
+jgo = summaryfun(juice.goo)
+jfa = summaryfun(juice.fai)
+jpo = summaryfun(juice.poo)
+
+names = c("Excellent", "Very Good", "Good", "Fair", "Poor")
+boxplot(jex, jve, jgo, jfa, jpo, outline = FALSE, names = names, main = "Comparing Boxplot Consumption of Juice Fruit by Health Status in the week", ylab = "Average")
+```
+
+Using BoxPlot we noted that the average consumption of health foods is the same for the entire classes. We believe that the consumption of differents classes does not have some correlation or causality. 
