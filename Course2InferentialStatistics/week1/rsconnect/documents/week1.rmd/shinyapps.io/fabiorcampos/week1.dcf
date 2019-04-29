@@ -1,0 +1,12 @@
+name: week1
+title: week1
+username:
+account: fabiorcampos
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 896651
+bundleId: 2045516
+url: https://fabiorcampos.shinyapps.io/week1/
+when: 1556496856.81774
+asMultiple: FALSE
+asStatic: FALSE

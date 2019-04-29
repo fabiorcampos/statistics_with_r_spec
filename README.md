@@ -18,3 +18,8 @@ This repository consist of artifacts related to the [Statistics with R (Speciali
 
 ###### [Week 5 Rpub](https://rpubs.com/fabiorocha5150/ExploringtheBRFSSdata)
 
+#### Course 2 - Inferential Statistics
+
+###### [Week 1 Rpub](http://rpubs.com/fabiorocha5150/week1_cor2)
+
+
